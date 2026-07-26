@@ -44,8 +44,44 @@ capsule.castShadow = true // 그림자 허용
 capsule.receiveShadow = true
 scene.add(capsule)
 
-const geometry = new THREE.BoxGeometry(1, 1, 1) // 정사각형
+const cylinderGeometry = new THREE.CylinderGeometry(1, 1, 2) // 원기둥
+const cylinderMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 }) // 원기둥 재질
+const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial)
+cylinder.position.set(-3, 1, 0) // 원기둥 위치
+cylinder.castShadow = true // 그림자 허용
+cylinder.receiveShadow = true
+scene.add(cylinder)
 
+const torusGeometry = new THREE.TorusGeometry(0.5, 0.1, 16, 100, Math.PI * 0.5) // 도넛
+const torusMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff }) // 도넛 재질
+const torus = new THREE.Mesh(torusGeometry, torusMaterial)
+torus.position.set(0, 1, 3) // 도넛 위치
+torus.castShadow = true // 그림자 허용
+torus.receiveShadow = true
+scene.add(torus)
+
+const starShape = new THREE.Shape()
+starShape.moveTo(0, 1)
+starShape.lineTo(0.2, 0.2)
+starShape.lineTo(1, 0.2)
+starShape.lineTo(0.4, -0.1)
+starShape.lineTo(0.6, -1)
+starShape.lineTo(0, -0.5)
+starShape.lineTo(-0.6, -1)
+starShape.lineTo(-0.4, -0.1)
+starShape.lineTo(-1, 0.2)
+starShape.lineTo(-0.2, 0.2)
+starShape.lineTo(0, 1) // 별 모양 좌표
+
+const shapeGeometry = new THREE.ShapeGeometry(starShape) // 별 모양
+const shapeMaterial = new THREE.MeshStandardMaterial({ color: 0xff00ff }) // 별 모양 재질
+const shape = new THREE.Mesh(shapeGeometry, shapeMaterial)
+shape.position.set(0, 1, 2) // 별 모양 위치
+shape.castShadow = true // 그림자 허용
+shape.receiveShadow = true
+scene.add(shape)
+
+const geometry = new THREE.BoxGeometry(1, 1, 1) // 정사각형
 // MeshStandardMaterial: 빛을 받으면 색이 변하는 재질
 // MeshBasicMaterial: 빛을 받지 않아도 색이 변하지 않는 재질
 const material = new THREE.MeshStandardMaterial({ color: 0xff0000 })
