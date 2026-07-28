@@ -6,6 +6,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 // antialias: 렌더링 시 계단 현상을 줄여주는 옵션
 const renderer = new THREE.WebGLRenderer({ antialias: true })
 renderer.shadowMap.enabled = true // 그림자 허용
+renderer.setSize(window.innerWidth, window.innerHeight)
 
 // 렌더러 크기 설정 (해줘야 화면에 보임)
 document.body.appendChild(renderer.domElement)
