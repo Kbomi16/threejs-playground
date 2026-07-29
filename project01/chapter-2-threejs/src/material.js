@@ -117,6 +117,70 @@ torusKnotLambert.castShadow = true
 torusKnotLambert.receiveShadow = true
 scene.add(torusKnotLambert)
 
+// ! MeshPhongMaterial: 빛을 받으면 색이 변하고 반짝이는 재질
+const torusKnotPhongMaterial = new THREE.MeshPhongMaterial({
+  color: 0x0000ff,
+  side: THREE.DoubleSide, // 앞면과 뒷면 모두 보이게 함
+})
+torusKnotPhongMaterial.emissive = new THREE.Color(0x00ff00) // 발광 색상
+torusKnotPhongMaterial.emissiveIntensity = 0.2 // 발광 강도
+torusKnotPhongMaterial.specular = new THREE.Color(0xffffff) // 반사광 색상
+torusKnotPhongMaterial.shininess = 100 // 반짝임 정도
+
+const torusKnotPhong = new THREE.Mesh(torusKnotGeometry, torusKnotPhongMaterial)
+torusKnotPhong.position.set(0, 1, 0)
+torusKnotPhong.castShadow = true
+torusKnotPhong.receiveShadow = true
+scene.add(torusKnotPhong)
+
+// ! MeshBasicMaterial: 빛을 받지 않는 재질
+const torusKnotBasicMaterial = new THREE.MeshBasicMaterial({
+  color: 0xff0000,
+  side: THREE.DoubleSide, // 앞면과 뒷면 모두 보이게 함
+})
+const torusKnotBasic = new THREE.Mesh(torusKnotGeometry, torusKnotBasicMaterial)
+torusKnotBasic.position.set(2, 1, 0)
+torusKnotBasic.castShadow = true
+torusKnotBasic.receiveShadow = true
+scene.add(torusKnotBasic)
+
+// ! MeshDepthMaterial: 깊이 재질, 카메라에서 가까운 물체는 밝게, 먼 물체는 어둡게 보임
+const torusKnotDepthMaterial = new THREE.MeshDepthMaterial({
+  color: 0xff0000,
+  side: THREE.DoubleSide, // 앞면과 뒷면 모두 보이게 함
+})
+torusKnotDepthMaterial.opacity = 0.5
+const torusKnotDepth = new THREE.Mesh(torusKnotGeometry, torusKnotDepthMaterial)
+torusKnotDepth.position.set(4, 1, 0)
+torusKnotDepth.castShadow = true
+torusKnotDepth.receiveShadow = true
+scene.add(torusKnotDepth)
+
+// ! MeshNormalMaterial: 법선 재질, 물체의 법선 벡터를 색상으로 표현
+const textureLoader = new THREE.TextureLoader()
+// textureLoader.load('/threejs.webp', (texture) => {
+//   const textureBoxGeometry = new THREE.BoxGeometry(1, 1, 1)
+//   const textureBoxMaterial = new THREE.MeshStandardMaterial({
+//     map: texture,
+//   })
+//   const textureBox = new THREE.Mesh(textureBoxGeometry, textureBoxMaterial)
+//   textureBox.position.set(6, 0.5, 0)
+//   textureBox.castShadow = true
+//   textureBox.receiveShadow = true
+//   scene.add(textureBox)
+// })
+const texture = await textureLoader.loadAsync('/threejs.webp')
+const textureBoxGeometry = new THREE.BoxGeometry(1, 1, 1)
+const textureBoxMaterial = new THREE.MeshStandardMaterial({
+  map: texture,
+})
+const textureBox = new THREE.Mesh(textureBoxGeometry, textureBoxMaterial)
+textureBox.position.set(6, 0.5, 0)
+textureBox.castShadow = true
+textureBox.receiveShadow = true
+scene.add(textureBox)
+
+// ! orbitControls: 마우스로 카메라를 움직일 수 있게 해주는 컨트롤러
 const orbitControls = new OrbitControls(camera, renderer.domElement)
 orbitControls.update()
 
@@ -133,6 +197,7 @@ window.addEventListener('resize', () => {
 const render = () => {
   renderer.render(scene, camera)
   requestAnimationFrame(render)
+  textureBox.rotation.y += 0.01
 }
 
 render()
