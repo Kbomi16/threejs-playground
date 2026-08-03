@@ -74,16 +74,43 @@ scene.add(boxMesh)
 // scene.add(directionalLightHelper)
 
 // ! PointLight: 점에서 모든 방향으로 비춰주는 빛
-const hemisphereLight = new THREE.HemisphereLight(0xb4a912, 0x12f34f, 5) // 하늘색, 땅색, 세기
-hemisphereLight.position.set(0, 1, 0) // 빛의 위치
-hemisphereLight.lookAt(0, 0, 0) // 빛이 바라보는 위치
-scene.add(hemisphereLight)
+// const hemisphereLight = new THREE.HemisphereLight(0xb4a912, 0x12f34f, 5) // 하늘색, 땅색, 세기
+// hemisphereLight.position.set(0, 1, 0) // 빛의 위치
+// hemisphereLight.lookAt(0, 0, 0) // 빛이 바라보는 위치
+// scene.add(hemisphereLight)
 
-const hemisphereLightHelper = new THREE.HemisphereLightHelper(
-  hemisphereLight,
-  1,
-) // 빛의 위치를 시각화
-scene.add(hemisphereLightHelper)
+// const hemisphereLightHelper = new THREE.HemisphereLightHelper(
+//   hemisphereLight,
+//   1,
+// ) // 빛의 위치를 시각화
+// scene.add(hemisphereLightHelper)
+
+// const pointLight = new THREE.PointLight(0xffffff, 5, 5, 4) // 색상, 세기, 거리, 각도
+// pointLight.castShadow = true // 그림자 허용
+// pointLight.position.set(1, 1, 1) // 빛의 위치
+// pointLight.lookAt(0, 0, 0) // 빛이 바라보는 위치
+// scene.add(pointLight)
+
+// const pointLightHelper = new THREE.PointLightHelper(pointLight, 1) // 빛의 위치를 시각화
+// scene.add(pointLightHelper)
+
+// ! RectAreaLight: 사각형 모양으로 비춰주는 빛
+// const rectAreaLight = new THREE.RectAreaLight(0xffffff, 5, 2, 2) // 색상, 세기, 너비, 높이
+// rectAreaLight.position.set(0, 1, 2) // 빛의 위치
+// scene.add(rectAreaLight)
+
+// ! SpotLight: 원뿔 모양으로 비춰주는 빛
+const targetObj = new THREE.Object3D() // 빛이 바라보는 위치를 지정하기 위한 객체
+scene.add(targetObj)
+
+const spotLight = new THREE.SpotLight(0xffffff, 10, 100, Math.PI / 4, 1, 1) // 색상, 세기, 거리, 각도, 감쇠, 그림자
+spotLight.position.set(0, 5, 0) // 빛의 위치
+spotLight.lookAt(0, 0, 0) // 빛이 바라보는 위치
+spotLight.target.position.set(1, 0, 2) // 빛이 바라보는 위치를 지정
+scene.add(spotLight)
+
+const spotLightHelper = new THREE.SpotLightHelper(spotLight) // 빛의 위치를 시각화
+scene.add(spotLightHelper)
 
 // ! orbitControls: 마우스로 카메라를 움직일 수 있게 해주는 컨트롤러
 const orbitControls = new OrbitControls(camera, renderer.domElement)
