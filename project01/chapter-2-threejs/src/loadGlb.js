@@ -59,6 +59,7 @@ const gltfLoader = new GLTFLoader()
 // })
 const gltf = await gltfLoader.loadAsync('/dancer.glb')
 const character = gltf.scene
+const animationClips = gltf.animations
 character.position.y = 0.8 // 모델 위치 조정
 character.scale.set(0.01, 0.01, 0.01) // 모델 크기 조정
 character.castShadow = true // 그림자 허용
@@ -73,6 +74,19 @@ character.traverse((obj) => {
   }
 })
 scene.add(gltf.scene)
+
+const mixer = new THREE.AnimationMixer(character) // 애니메이션 믹서
+const action = mixer.clipAction(animationClips[0]) // 애니메이션 클립
+action.setLoop(THREE.LoopRepeat) // 애니메이션 반복
+
+// ? 둘의 차이점: setDuration은 애니메이션의 길이를 설정하는 것이고, setEffectiveTimeScale은 애니메이션의 속도를 설정하는 것이다.
+// action.setDuration(10) // 애니메이션 길이
+// action.setEffectiveTimeScale(2) // 애니메이션 속도
+action.play() // 애니메이션 재생
+
+setTimeout(() => {
+  action.stop() // 애니메이션 정지
+}, 5000) // 5초 후 애니메이션 정지
 
 // ! orbitControls: 마우스로 카메라를 움직일 수 있게 해주는 컨트롤러
 const orbitControls = new OrbitControls(camera, renderer.domElement)
@@ -89,10 +103,15 @@ window.addEventListener('resize', () => {
   renderer.render(scene, camera)
 })
 
+const clock = new THREE.Clock() // 애니메이션 시간 측정
+
 const render = () => {
   renderer.render(scene, camera)
   requestAnimationFrame(render)
   orbitControls.update()
+  if (mixer) {
+    mixer.update(clock.getDelta()) // 애니메이션 업데이트
+  }
 }
 
 render()
