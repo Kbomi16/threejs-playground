@@ -33,12 +33,6 @@ directionalLight.position.set(3, 4, 5) // 빛의 위치
 directionalLight.lookAt(0, 0, 0) // 빛이 바라보는 위치
 scene.add(directionalLight)
 
-const direnctionalLightHelper = new THREE.DirectionalLightHelper(
-  directionalLight,
-  1,
-)
-scene.add(direnctionalLightHelper)
-
 // ! 바닥 생성
 const floorGeometry = new THREE.PlaneGeometry(20, 20) // 바닥 평면
 const floorMaterial = new THREE.MeshStandardMaterial({
@@ -48,15 +42,10 @@ const floorMaterial = new THREE.MeshStandardMaterial({
 const floor = new THREE.Mesh(floorGeometry, floorMaterial)
 floor.rotation.x = -Math.PI / 2 // 바닥 평면을 수평으로 회전
 floor.receiveShadow = true // 그림자 허용
+floor.name = 'FLOOR' // 바닥 이름 설정
 scene.add(floor)
 
 const gltfLoader = new GLTFLoader()
-// gltfLoader.load('/dancer.glb', (gltf) => {
-//   const character = gltf.scene
-//   character.position.y = 0.8 // 모델 위치 조정
-//   character.scale.set(0.01, 0.01, 0.01) // 모델 크기 조정
-//   scene.add(gltf.scene)
-// })
 const gltf = await gltfLoader.loadAsync('/dancer.glb')
 const character = gltf.scene
 const animationClips = gltf.animations
@@ -77,21 +66,33 @@ scene.add(gltf.scene)
 
 const mixer = new THREE.AnimationMixer(character) // 애니메이션 믹서
 const action = mixer.clipAction(animationClips[0]) // 애니메이션 클립
-action.setLoop(THREE.LoopRepeat) // 애니메이션 반복
-
-// ? 둘의 차이점: setDuration은 애니메이션의 길이를 설정하는 것이고, setEffectiveTimeScale은 애니메이션의 속도를 설정하는 것이다.
-// action.setDuration(10) // 애니메이션 길이
-// action.setEffectiveTimeScale(2) // 애니메이션 속도
+action.setLoop(THREE.LoopPingPong) // 애니메이션 반복
 action.play() // 애니메이션 재생
-
-setTimeout(() => {
-  action.stop() // 애니메이션 정지
-}, 5000) // 5초 후 애니메이션 정지
 
 // ! orbitControls: 마우스로 카메라를 움직일 수 있게 해주는 컨트롤러
 const orbitControls = new OrbitControls(camera, renderer.domElement)
 orbitControls.enableDamping = true // 부드럽게 카메라 이동
 orbitControls.dampingFactor = 0.05 // damping 계수
+
+// ! rayCaster: 마우스 클릭 시 객체 선택
+const newPosition = new THREE.Vector3(0, 1, 0) // 클릭한 위치를 저장할 벡터
+const rayCaster = new THREE.Raycaster() // 마우스 클릭 시 객체 선택
+renderer.domElement.addEventListener('pointerdown', (event) => {
+  const mouse = new THREE.Vector2()
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1 // 마우스 클릭 좌표를 -1 ~ 1 범위로 변환
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1 // 마우스 클릭 좌표를 -1 ~ 1 범위로 변환
+
+  rayCaster.setFromCamera(mouse, camera) // 마우스 클릭 좌표로 레이캐스터 설정
+  const intersects = rayCaster.intersectObjects(scene.children, true) // 씬의 모든 객체와 교차 검사
+  console.log('intersects', intersects)
+
+  const intersectFloor = intersects.find(
+    (intersect) => intersect.object.name === 'FLOOR',
+  ) // 바닥과 교차한 객체 찾기
+  console.log('intersectFloor', intersectFloor)
+  newPosition.copy(intersectFloor.point) // 바닥과 교차한 위치를 newPosition에 저장
+  newPosition.y = 1 // 모델 높이 조정
+})
 
 // ! 애니메이션
 // 브라우저 창 크기 조정 시 렌더러와 카메라 비율 업데이트
@@ -104,8 +105,24 @@ window.addEventListener('resize', () => {
 })
 
 const clock = new THREE.Clock() // 애니메이션 시간 측정
+const targetVector = new THREE.Vector3() // 모델이 바라볼 위치를 저장할 벡터
 
 const render = () => {
+  character.lookAt(newPosition) // 모델이 newPosition을 바라보게 함
+  targetVector
+    .subVectors(newPosition, character.position) // 모델과 newPosition의 벡터 차이 계산
+    .normalize() // 벡터 정규화
+    .multiplyScalar(0.01) // 벡터 크기 조정
+
+  // 모델과 newPosition의 거리가 1 이상이면 모델을 이동
+  if (
+    Math.abs((character.position.x = newPosition.x)) >= 0.01 ||
+    Math.abs(character.position.z - newPosition.z) >= 0.01
+  ) {
+    character.position.x += targetVector.x
+    character.position.z += targetVector.z
+    action.stop() // 모델이 이동 중이면 애니메이션 정지
+  }
   renderer.render(scene, camera)
   requestAnimationFrame(render)
   orbitControls.update()
