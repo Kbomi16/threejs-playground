@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
 import { SpotLight, useHelper } from '@react-three/drei'
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
@@ -12,7 +14,7 @@ export default function Lights() {
 
   // useHelper(ref, THREE.HemisphereLightHelper, 1, '0xffffff')
 
-  useHelper(ref, THREE.SpotLightHelper, 1, '0xffffff')
+  // useHelper(ref, THREE.SpotLightHelper, 1, '0xffffff')
 
   const targetRef = useRef(null)
   const [target, setTarget] = useState()
@@ -27,7 +29,7 @@ export default function Lights() {
     <>
       {/* <ambientLight args={[0xffffff, 0.5]} /> */}
 
-      {/* <directionalLight
+      <directionalLight
         ref={ref}
         args={[0xffffff, 5]}
         position={[4, 4, 4]}
@@ -40,7 +42,7 @@ export default function Lights() {
         shadow-mapSize-width={4096}
         shadow-mapSize-height={4096}
         castShadow
-      /> */}
+      />
 
       {/* <pointLight
         ref={ref}
@@ -69,7 +71,7 @@ export default function Lights() {
         castShadow
       /> */}
 
-      <SpotLight
+      {/* <SpotLight
         color={'0xffffff'}
         intensity={10} // 밝기
         distance={100} // 빛이 도달하는 거리
@@ -87,7 +89,7 @@ export default function Lights() {
         castShadow // 그림자 생성 여부
         // lookAt 메서드가 없어서 타겟을 설정해야 한다.
         target={target}
-      />
+      /> */}
     </>
   )
 }

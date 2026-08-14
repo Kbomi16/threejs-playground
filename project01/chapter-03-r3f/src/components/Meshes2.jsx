@@ -12,7 +12,7 @@ export default function Meshes2() {
         castShadow
         receiveShadow
       >
-        <meshStandardMaterial color={'#ffffff'} roughness={0.5} metalness={1} />
+        <meshStandardMaterial color={'#ff0000'} />
       </TorusKnot>
     </>
   )
