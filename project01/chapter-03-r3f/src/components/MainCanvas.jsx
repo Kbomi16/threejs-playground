@@ -6,6 +6,7 @@ import * as THREE from 'three'
 // import Meshes from './Meshes'
 import Lights from './Lights'
 import Meshes2 from './Meshes2'
+import Controls from './Controls'
 // import * as THREE from 'three'
 
 export default function MainCanvas() {
@@ -25,7 +26,7 @@ export default function MainCanvas() {
       }}
       scene={{ background: new THREE.Color('#000000') }}
     >
-      <OrbitControls />
+      <Controls />
       <Lights />
       {/* <Meshes /> */}
       <Meshes2 />
