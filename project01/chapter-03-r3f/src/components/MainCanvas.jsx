@@ -7,6 +7,7 @@ import * as THREE from 'three'
 import Lights from './Lights'
 import Meshes2 from './Meshes2'
 import Controls from './Controls'
+import GLBModel from './GLBModel'
 // import * as THREE from 'three'
 
 export default function MainCanvas() {
@@ -30,6 +31,7 @@ export default function MainCanvas() {
       <Lights />
       {/* <Meshes /> */}
       <Meshes2 />
+      <GLBModel />
     </Canvas>
   )
 }

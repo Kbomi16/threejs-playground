@@ -48,15 +48,17 @@ export default function Controls() {
 
     // <PointerLockControls />
 
-    <TrackballControls
-      rotateSpeed={1.0} // 회전 속도
-      zoomSpeed={1.2} // 줌 속도
-      panSpeed={0.8} // 패닝 속도
-      noRotate={false} // 회전 기능 활성화 여부
-      noZoom={false} // 줌 기능 활성화 여부
-      noPan={false} // 패닝 기능 활성화 여부
-      staticMoving={false} // 마우스 이동 시 카메라가 즉시 따라오도록 설정
-      dynamicDampingFactor={0.05} // 감쇠 계수, 0~1 사이의 값으로 설정 가능. 0에 가까울수록 감쇠가 적고, 1에 가까울수록 감쇠가 큼
-    />
+    // <TrackballControls
+    //   rotateSpeed={1.0} // 회전 속도
+    //   zoomSpeed={1.2} // 줌 속도
+    //   panSpeed={0.8} // 패닝 속도
+    //   noRotate={false} // 회전 기능 활성화 여부
+    //   noZoom={false} // 줌 기능 활성화 여부
+    //   noPan={false} // 패닝 기능 활성화 여부
+    //   staticMoving={false} // 마우스 이동 시 카메라가 즉시 따라오도록 설정
+    //   dynamicDampingFactor={0.05} // 감쇠 계수, 0~1 사이의 값으로 설정 가능. 0에 가까울수록 감쇠가 적고, 1에 가까울수록 감쇠가 큼
+    // />
+
+    <OrbitControls />
   )
 }
