@@ -1,8 +1,13 @@
-import { useGLTF } from '@react-three/drei'
-import { useEffect } from 'react'
+import { useAnimations, useGLTF } from '@react-three/drei'
+import { useFrame, useThree } from '@react-three/fiber'
+import { useEffect, useRef } from 'react'
 
 export default function GLBModel() {
-  const { scene } = useGLTF('/dancer.glb')
+  const three = useThree()
+  const { scene, animations } = useGLTF('/dancer.glb')
+  const ref = useRef(null)
+
+  const { actions } = useAnimations(animations, ref)
 
   useEffect(() => {
     scene.traverse((obj) => {
@@ -10,8 +15,13 @@ export default function GLBModel() {
         obj.castShadow = true
         obj.receiveShadow = true
       }
-    })
-  }, [])
 
-  return <primitive scale={0.01} object={scene} position-y={0.8} />
+      actions['wave'].play()
+    })
+  }, [scene, actions])
+
+  // state 값 = useThree 로 얻은 값과 같다?
+  useFrame((state, delta) => {})
+
+  return <primitive ref={ref} scale={0.01} object={scene} position-y={0.8} />
 }
