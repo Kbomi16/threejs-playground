@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-// eslint-disable-next-line no-unused-vars
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
@@ -8,6 +6,7 @@ import Lights from './Lights'
 import Meshes2 from './Meshes2'
 import Controls from './Controls'
 import GLBModel from './GLBModel'
+import { Dancer } from './Dancer'
 // import * as THREE from 'three'
 
 export default function MainCanvas() {
@@ -31,7 +30,8 @@ export default function MainCanvas() {
       <Lights />
       {/* <Meshes /> */}
       <Meshes2 />
-      <GLBModel />
+      {/* <GLBModel /> */}
+      <Dancer />
     </Canvas>
   )
 }
