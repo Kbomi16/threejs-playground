@@ -7,6 +7,7 @@ import Meshes2 from './Meshes2'
 import Controls from './Controls'
 import GLBModel from './GLBModel'
 import { Dancer } from './Dancer'
+import PostProcessor from './PostProcessor'
 // import * as THREE from 'three'
 
 export default function MainCanvas() {
@@ -31,7 +32,8 @@ export default function MainCanvas() {
       {/* <Meshes /> */}
       <Meshes2 />
       {/* <GLBModel /> */}
-      <Dancer />
+      {/* <Dancer /> */}
+      <PostProcessor />
     </Canvas>
   )
 }

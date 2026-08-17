@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Plane, TorusKnot } from '@react-three/drei'
 
 export default function Meshes2() {
@@ -8,14 +7,20 @@ export default function Meshes2() {
         <meshStandardMaterial />
       </Plane>
 
-      {/* <TorusKnot
+      <TorusKnot
         args={[1, 0.2, 128, 128, 2, 3]}
         position={[1, 2, 1]}
         castShadow
         receiveShadow
       >
-        <meshStandardMaterial color={'#ff0000'} />
-      </TorusKnot> */}
+        <meshStandardMaterial
+          color={'#ff0000'}
+          roughness={0.5}
+          metalness={0.5}
+          emissive={'#0xffff00'}
+          emissiveIntensity={1}
+        />
+      </TorusKnot>
     </>
   )
 }
