@@ -28,16 +28,19 @@ export default function MainCanvas() {
       }}
       scene={{ background: new THREE.Color('#000000') }}
     >
+      {/* Physics: cannon 월드. useBox/useSphere 등 물리 훅은 이 안에서만 사용 */}
       <Physics
-        gravity={[0, -9, 0]}
+        gravity={[0, -9, 0]} // 중력 [x, y, z]. 지구 ≈ [0, -9.81, 0]
         defaultContactMaterial={{
-          restitution: 0.1, // 탄성력
+          // 바디 material.restitution 이 아니라 여기 값이 실제 탄성에 쓰임
+          restitution: 0.1, // 탄성 (0=안 튕김, 1=완전탄성)
           friction: 0.5, // 마찰력
         }}
       >
         <Lights />
         <Meshes2 />
       </Physics>
+      {/* OrbitControls 는 물리와 무관해서 Physics 밖에 둠 */}
       <Controls />
       {/* <Meshes /> */}
       {/* <GLBModel /> */}
