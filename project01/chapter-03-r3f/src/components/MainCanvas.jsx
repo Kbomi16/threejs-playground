@@ -9,6 +9,7 @@ import GLBModel from './GLBModel'
 import { Dancer } from './Dancer'
 import PostProcessor from './PostProcessor'
 // import * as THREE from 'three'
+import { Physics } from '@react-three/cannon'
 
 export default function MainCanvas() {
   return (
@@ -27,13 +28,21 @@ export default function MainCanvas() {
       }}
       scene={{ background: new THREE.Color('#000000') }}
     >
+      <Physics
+        gravity={[0, -9, 0]}
+        defaultContactMaterial={{
+          restitution: 0.1, // 탄성력
+          friction: 0.5, // 마찰력
+        }}
+      >
+        <Lights />
+        <Meshes2 />
+      </Physics>
       <Controls />
-      <Lights />
       {/* <Meshes /> */}
-      <Meshes2 />
       {/* <GLBModel /> */}
       {/* <Dancer /> */}
-      <PostProcessor />
+      {/* <PostProcessor /> */}
     </Canvas>
   )
 }
