@@ -1,6 +1,7 @@
 import { Canvas } from '@react-three/fiber'
 import * as THREE from 'three'
-import { Box, OrbitControls } from '@react-three/drei'
+import { OrbitControls } from '@react-three/drei'
+import Dancer from './Dancer'
 
 export default function MainCanvas() {
   const aspectRatio = window.innerWidth / window.innerHeight
@@ -18,8 +19,8 @@ export default function MainCanvas() {
       }}
       scene={{ background: new THREE.Color('#000') }}
     >
-      <Box material-color="red" />
       <OrbitControls />
+      <Dancer />
     </Canvas>
   )
 }
