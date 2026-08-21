@@ -1,11 +1,14 @@
 import MainCanvas from './components/MainCanvas'
 import styled from 'styled-components'
+import { RecoilRoot } from 'recoil-next'
 
 function App() {
   return (
-    <Wrapper>
-      <MainCanvas />
-    </Wrapper>
+    <RecoilRoot>
+      <Wrapper>
+        <MainCanvas />
+      </Wrapper>
+    </RecoilRoot>
   )
 }
 

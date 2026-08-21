@@ -1,10 +1,20 @@
 import { Canvas } from '@react-three/fiber'
 import * as THREE from 'three'
-import { OrbitControls } from '@react-three/drei'
+import {
+  // OrbitControls,
+  ScrollControls,
+} from '@react-three/drei'
 import Dancer from './Dancer'
+import Loader from './Loader'
+import { Suspense } from 'react'
+import MovingDom from './dom/MovingDom'
+import { useRecoilValue } from 'recoil-next'
+import { IsEnteredAtom } from '../stores'
 
 export default function MainCanvas() {
+  const isEntered = useRecoilValue(IsEnteredAtom)
   const aspectRatio = window.innerWidth / window.innerHeight
+
   return (
     <Canvas
       id="canvas"
@@ -19,8 +29,16 @@ export default function MainCanvas() {
       }}
       scene={{ background: new THREE.Color('#000') }}
     >
-      <OrbitControls />
-      <Dancer />
+      <ScrollControls
+        pages={isEntered ? 8 : 0} // 페이지 수 -> 많을 수록 스크롤이 더 생김
+        damping={0.25} // 스크롤 감쇠
+      >
+        <Suspense fallback={<Loader />}>
+          <MovingDom />
+          <Dancer />
+        </Suspense>
+      </ScrollControls>
+      {/* <OrbitControls /> */}
     </Canvas>
   )
 }

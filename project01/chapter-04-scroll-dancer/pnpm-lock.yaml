@@ -20,9 +20,9 @@ importers:
       react-dom:
         specifier: ^19.2.8
         version: 19.2.8(react@19.2.8)
-      recoil:
-        specifier: ^0.7.7
-        version: 0.7.7(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      recoil-next:
+        specifier: ^0.4.4
+        version: 0.4.4(react@19.2.8)
       styled-components:
         specifier: ^6.5.3
         version: 6.5.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -898,17 +898,10 @@ packages:
     resolution: {integrity: sha512-PWaYA1L/q9u2u7xYQi+Y3L3Yfnie7XyLeaJICV1MGD6LprsBxcAqGjYyr0eY3p+QdsA+x/Irkt4Qif8D63+Sbw==}
     engines: {node: '>=0.10.0'}
 
-  recoil@0.7.7:
-    resolution: {integrity: sha512-8Og5KPQW9LwC577Vc7Ug2P0vQshkv1y3zG3tSSkWMqkWSwHmE+by06L8JtnGocjW6gcCvfwB3YtrJG6/tWivNQ==}
+  recoil-next@0.4.4:
+    resolution: {integrity: sha512-V5FGq+LedPm4cgRHEgX6gV4IrvqBSwQbccE2L15pCG5Ivi8yl7RsojvTPLQYTK0Jn/fOGYUYhI9X9YplAJKT5w==}
     peerDependencies:
-      react: '>=16.13.1'
-      react-dom: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
+      react: '>=18'
 
   require-from-string@2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
@@ -1882,12 +1875,10 @@ snapshots:
 
   react@19.2.8: {}
 
-  recoil@0.7.7(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+  recoil-next@0.4.4(react@19.2.8):
     dependencies:
       hamt_plus: 1.0.2
       react: 19.2.8
-    optionalDependencies:
-      react-dom: 19.2.8(react@19.2.8)
 
   require-from-string@2.0.2: {}
 
