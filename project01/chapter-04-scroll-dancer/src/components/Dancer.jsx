@@ -7,6 +7,8 @@ import Loader from './Loader'
 import gsap from 'gsap'
 import { useThree } from '@react-three/fiber'
 
+let timeline
+
 export default function Dancer() {
   const isEntered = useRecoilValue(IsEnteredAtom)
   const three = useThree()
@@ -19,7 +21,11 @@ export default function Dancer() {
   // offset: 스크롤이 맨 위면 0, 맨 아래면 1
   const scroll = useScroll()
 
-  useFrame(() => {})
+  useFrame(() => {
+    if (!isEntered) return
+
+    timeline.seek(scroll.offset * timeline.duration())
+  })
 
   useEffect(() => {
     if (!isEntered) return
@@ -56,7 +62,20 @@ export default function Dancer() {
         z: 0,
       },
     )
-  }, [isEntered, three.camera])
+  }, [isEntered, three.camera, three.camera.rotation])
+
+  useEffect(() => {
+    if (!isEntered) return
+    if (!dancerRef.current) return
+
+    timeline = gsap.timeline()
+
+    // 댄서가 뱅글뱅글 도는 애니메이션 (스크롤 시)
+    timeline.from(dancerRef.current.rotation, {
+      duration: 4,
+      y: Math.PI * -4,
+    })
+  }, [isEntered])
 
   if (!isEntered) return <Loader isCompleted />
 
