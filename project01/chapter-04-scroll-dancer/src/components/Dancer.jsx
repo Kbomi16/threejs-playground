@@ -71,11 +71,43 @@ export default function Dancer() {
     timeline = gsap.timeline()
 
     // 댄서가 뱅글뱅글 도는 애니메이션 (스크롤 시)
-    timeline.from(dancerRef.current.rotation, {
-      duration: 4,
-      y: Math.PI * -4,
-    })
-  }, [isEntered])
+    timeline
+      .from(
+        dancerRef.current.rotation,
+        {
+          duration: 4,
+          y: Math.PI * -4,
+        },
+        0.5,
+      )
+      .from(
+        dancerRef.current.position,
+        {
+          duration: 4,
+          x: 3,
+        },
+        '<', //
+      )
+      .to(
+        three.camera.position,
+        {
+          duration: 10,
+          x: 2,
+          z: 8,
+        },
+        '<',
+      )
+      .to(three.camera.position, {
+        duration: 10,
+        x: 0,
+        z: 6,
+      })
+      .to(three.camera.position, {
+        duration: 10,
+        x: 0,
+        z: 16,
+      })
+  }, [isEntered, three.camera.position])
 
   if (!isEntered) return <Loader isCompleted />
 
