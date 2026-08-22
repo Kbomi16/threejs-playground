@@ -4,9 +4,12 @@ import { useEffect, useRef } from 'react'
 import { useRecoilValue } from 'recoil-next'
 import { IsEnteredAtom } from '../stores'
 import Loader from './Loader'
+import gsap from 'gsap'
+import { useThree } from '@react-three/fiber'
 
 export default function Dancer() {
   const isEntered = useRecoilValue(IsEnteredAtom)
+  const three = useThree()
 
   const dancerRef = useRef(null)
 
@@ -23,6 +26,37 @@ export default function Dancer() {
 
     actions['wave'].play() // 춤추는 애니메이션 재생
   }, [actions, isEntered])
+
+  useEffect(() => {
+    if (!isEntered) return
+    if (!dancerRef.current) return
+
+    gsap.fromTo(
+      three.camera.position,
+      {
+        x: -5,
+        y: 5,
+        z: 5,
+      },
+      {
+        duration: 2.5,
+        x: 0,
+        y: 6,
+        z: 12,
+      },
+    )
+
+    gsap.fromTo(
+      three.camera.rotation,
+      {
+        z: Math.PI,
+      },
+      {
+        duration: 2.5,
+        z: 0,
+      },
+    )
+  }, [isEntered, three.camera])
 
   if (!isEntered) return <Loader isCompleted />
 
