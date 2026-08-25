@@ -8,7 +8,7 @@ import {
   useTexture,
 } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRecoilValue } from 'recoil-next'
 import { IsEnteredAtom } from '../stores'
 import Loader from './Loader'
@@ -18,6 +18,10 @@ import * as THREE from 'three'
 
 let timeline
 
+const colors = {
+  boxMaterialColor: '#dc4f00',
+}
+
 const PARTICLE_COUNT = 500
 const positions = new Float32Array(PARTICLE_COUNT * 3)
 for (let i = 0; i < positions.length; i++) {
@@ -25,10 +29,19 @@ for (let i = 0; i < positions.length; i++) {
 }
 
 export default function Dancer() {
+  const [currentAnimation, setCurrentAnimation] = useState(null)
+  const [rotateFinished, setRotateFinished] = useState(false)
+
   const isEntered = useRecoilValue(IsEnteredAtom)
   const three = useThree()
 
   const dancerRef = useRef(null)
+  const boxRef = useRef(null)
+  const starGroupRef01 = useRef(null)
+  const starGroupRef02 = useRef(null)
+  const starGroupRef03 = useRef(null)
+  const rectAreaLightRef = useRef(null)
+  const hemisphereLightRef = useRef(null)
 
   const { scene, animations } = useGLTF('/models/dancer.glb')
   const texture = useTexture('/textures/5.png')
@@ -38,17 +51,62 @@ export default function Dancer() {
   // offset: 스크롤이 맨 위면 0, 맨 아래면 1
   const scroll = useScroll()
 
+  // ! 스크롤 시 애니메이션 적용
   useFrame(() => {
     if (!isEntered) return
 
     timeline.seek(scroll.offset * timeline.duration())
+
+    boxRef.current.material.color.set(colors.boxMaterialColor)
+
+    if (rotateFinished) {
+      setCurrentAnimation('breakdacingEnd')
+    } else {
+      setCurrentAnimation('wave')
+    }
   })
 
+  // ! 스크롤 시 카메라 이동 및 애니메이션 재생
   useEffect(() => {
     if (!isEntered) return
 
+    three.camera.lookAt(1, 2, 0)
     actions['wave'].play() // 춤추는 애니메이션 재생
-  }, [actions, isEntered])
+
+    // 강의의 three.scene.background = ... 와 동일. Compiler 때문에 스토어에서 접근
+    useThree.getState().scene.background = new THREE.Color(
+      colors.boxMaterialColor,
+    )
+
+    scene.traverse((obj) => {
+      if (obj.isMesh) {
+        obj.castShadow = true
+        obj.receiveShadow = true
+      }
+    })
+  }, [actions, isEntered, three.camera, scene])
+
+  useEffect(() => {
+    let timeout
+
+    if (currentAnimation === 'wave') {
+      actions[currentAnimation].reset().fadeIn(0.5).play()
+    } else {
+      actions[currentAnimation]
+        .reset()
+        .fadeIn(0.5)
+        .play()
+        .setLoop(THREE.LoopOnce, 1)
+
+      timeout = setTimeout(() => {
+        if (actions[currentAnimation]) {
+          actions[currentAnimation].paused = true
+        }
+      }, 8000)
+
+      return () => clearTimeout(timeout)
+    }
+  }, [actions, currentAnimation])
 
   useEffect(() => {
     if (!isEntered) return
@@ -79,6 +137,39 @@ export default function Dancer() {
         z: 0,
       },
     )
+
+    gsap.fromTo(
+      colors,
+      {
+        boxMaterialColor: '#0c0400',
+      },
+      {
+        duration: 2.5,
+        boxMaterialColor: '#dc4f00',
+      },
+    )
+
+    gsap.to(starGroupRef01.current, {
+      yoyo: true, // 정방향 -> 역방향 -> 정방향 ...
+      duration: 2,
+      repeat: -1,
+      ease: 'linear',
+      size: 0.05,
+    })
+    gsap.to(starGroupRef02.current, {
+      yoyo: true,
+      duration: 3,
+      repeat: -1,
+      ease: 'linear',
+      size: 0.05,
+    })
+    gsap.to(starGroupRef03.current, {
+      yoyo: true,
+      duration: 4,
+      repeat: -1,
+      ease: 'linear',
+      size: 0.05,
+    })
   }, [isEntered, three.camera, three.camera.rotation])
 
   useEffect(() => {
@@ -103,7 +194,7 @@ export default function Dancer() {
           duration: 4,
           x: 3,
         },
-        '<', //
+        '<',
       )
       .to(
         three.camera.position,
@@ -137,7 +228,11 @@ export default function Dancer() {
         intensity={2} // 빛의 세기
       />
       {/* rectAreaLight: 사각형 면광원. 부드러운 조명 */}
-      <rectAreaLight position={[0, 10, 0]} intensity={30} />
+      <rectAreaLight
+        ref={rectAreaLightRef}
+        position={[0, 10, 0]}
+        intensity={30}
+      />
       {/* pointLight: 한 점에서 사방으로 퍼지는 점광원 */}
       <pointLight
         position={[0, 5, 0]}
@@ -147,13 +242,14 @@ export default function Dancer() {
       />
       {/* hemisphereLight: 하늘색/땅색으로 위아래를 다르게 비추는 반구광 */}
       <hemisphereLight
+        ref={hemisphereLightRef}
         position={[0, 5, 0]}
         intensity={0}
         groundColor={'lime'}
         color={'blue'}
       />
       {/* Box: 큰 정육면체 메시. 방을 감싸는 배경으로 사용 */}
-      <Box position={[0, 0, 0]} args={[100, 100, 100]}>
+      <Box ref={boxRef} position={[0, 0, 0]} args={[100, 100, 100]}>
         {/* meshStandardMaterial: 빛에 반응하는 표준 재질. DoubleSide는 안쪽 면도 렌더 */}
         <meshStandardMaterial color={'#dc4f00'} side={THREE.DoubleSide} />
       </Box>
@@ -171,6 +267,7 @@ export default function Dancer() {
       {/* Points: 점(파티클)을 그리는 컴포넌트 */}
       <Points positions={positions.slice(0, positions.length / 3)}>
         <pointsMaterial
+          ref={starGroupRef01}
           size={0.5} // 각 점(파티클)의 크기
           color="#dc4f00" // 점의 색상
           sizeAttenuation // 카메라와 멀어질수록 점이 작아짐 (원근감)
@@ -187,6 +284,7 @@ export default function Dancer() {
         )}
       >
         <pointsMaterial
+          ref={starGroupRef02}
           size={0.5}
           color="#dc4f00"
           sizeAttenuation
@@ -203,6 +301,7 @@ export default function Dancer() {
         )}
       >
         <pointsMaterial
+          ref={starGroupRef03}
           size={0.5}
           color="#dc4f00"
           sizeAttenuation
