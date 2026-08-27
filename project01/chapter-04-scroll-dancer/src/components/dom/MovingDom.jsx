@@ -16,13 +16,16 @@ export default function MovingDom() {
   const article08Ref = useRef(null)
 
   useFrame(() => {
+    const fixed = document.getElementById('fixed')
+
     if (
       !isEntered ||
       !article01Ref.current ||
       !article02Ref.current ||
       !article03Ref.current ||
       !article04Ref.current ||
-      !article08Ref.current
+      !article08Ref.current ||
+      !fixed
     )
       return
 
@@ -31,6 +34,14 @@ export default function MovingDom() {
     article02Ref.current.style.opacity = `${1 - scroll.range(1 / 8, 1 / 8)}`
     article03Ref.current.style.opacity = `${scroll.curve(2 / 8, 1 / 8)}`
     article04Ref.current.style.opacity = `${scroll.curve(3 / 8, 1 / 8)}`
+
+    if (scroll.visible(4 / 8, 3 / 8)) {
+      fixed.style.display = 'flex'
+      fixed.style.opacity = `${scroll.curve(4 / 8, 3 / 8)}`
+    } else {
+      fixed.style.display = 'none'
+    }
+
     article08Ref.current.style.opacity = `${scroll.range(7 / 8, 1 / 8)}`
   })
 
