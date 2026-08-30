@@ -1,6 +1,8 @@
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import * as THREE from 'three'
+// import InstacnedBoxes from './InstacnedBoxes'
+import MergedMesh from './MergedMesh'
 
 export default function MainCanvas() {
   return (
@@ -18,6 +20,8 @@ export default function MainCanvas() {
       <ambientLight intensity={2} />
       <directionalLight position={[100, 100, 100]} />
       <OrbitControls />
+      {/* <InstacnedBoxes /> */}
+      <MergedMesh />
     </Canvas>
   )
 }
