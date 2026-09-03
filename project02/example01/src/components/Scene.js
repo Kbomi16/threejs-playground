@@ -1,6 +1,7 @@
 import { Canvas } from '@react-three/fiber'
 import Light from './Lights'
 import Earth from './Earth'
+import Weather from './Weather'
 
 export default function Scene() {
   return (
@@ -8,6 +9,7 @@ export default function Scene() {
       <color attach="background" args={['rgb(67,127,240) 100%']} />
       <Light />
       <Earth position={[0, -2, 0]} />
+      <Weather position={[0, 0, 0]} weather="clear" />
     </Canvas>
   )
 }
