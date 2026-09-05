@@ -1,14 +1,23 @@
-import { useLoader } from "@react-three/fiber";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { useLoader } from '@react-three/fiber'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
-const Weather = (props) => {
-    const glb = useLoader(GLTFLoader, '/models/weather.glb')
-    console.log(glb.nodes)
-    return(
-        <mesh position={props.position}>
-            <primitive object={glb.nodes[props.weather]} />
-        </mesh>
-    )
+const Weather = ({ position, weather }) => {
+  const glb = useLoader(GLTFLoader, '/models/weather.glb')
+  console.log(glb.nodes)
+
+  let weatherModel
+
+  if (glb.nodes[weather]) {
+    weatherModel = glb.nodes[weather].clone()
+  } else {
+    weatherModel = glb.nodes.cloud.clone()
+  }
+
+  return (
+    <mesh position={position}>
+      <primitive object={weatherModel} />
+    </mesh>
+  )
 }
 
-export default Weather;
+export default Weather

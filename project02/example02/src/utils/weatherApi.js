@@ -22,7 +22,7 @@ export const getCityWeather = async (city, key) => {
     const data = await response.json()
     return {
       city: city,
-      weather: data,
+      weatherData: data,
     }
   } catch (error) {
     console.error('도시 날씨 정보 GET 실패', error)
