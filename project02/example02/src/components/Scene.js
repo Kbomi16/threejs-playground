@@ -1,12 +1,33 @@
 import Earth from './Earth'
 import Weather from './Weather'
-import { useEffect } from 'react'
-import { getCurrentWeather } from '../utils/weatherApi'
+import { useEffect, useState } from 'react'
+import { getCityWeather } from '../utils/weatherApi'
+import { cities } from '../utils/cities'
+
+const API = process.env.REACT_APP_API_KEY
 
 const Scene = () => {
+  const [content, setContent] = useState(null)
+
+  // ! 도시 날씨 정보 조회
+  const getCitiesWeather = async () => {
+    try {
+      const weathers = await Promise.all(
+        cities.map((city) => getCityWeather(city, API)),
+      )
+      setContent(weathers)
+    } catch (error) {
+      console.error('도시 날씨 정보 조회 실패', error)
+    }
+  }
+
   useEffect(() => {
-    getCurrentWeather(44.34, 10.99, process.env.REACT_APP_API_KEY)
+    getCitiesWeather()
   }, [])
+
+  useEffect(() => {
+    console.log(content)
+  }, [content])
 
   return (
     <>
