@@ -31,7 +31,7 @@ const Scene = () => {
 
   return (
     <>
-      <Earth position={[0, -2, 0]} />
+      <Earth />
       {content?.map((el, i) => (
         <Weather
           key={el.city}

@@ -1,10 +1,10 @@
-import { useLoader } from '@react-three/fiber'
-import { useMemo } from 'react'
+import { useFrame, useLoader } from '@react-three/fiber'
+import { useMemo, useRef } from 'react'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 const Weather = ({ position, weather }) => {
   const glb = useLoader(GLTFLoader, '/models/weather.glb')
-  console.log(glb.nodes)
+  const ref = useRef(null)
 
   // let weatherModel
 
@@ -19,8 +19,14 @@ const Weather = ({ position, weather }) => {
     return cloneModel.clone()
   }, [weather, glb.nodes])
 
+  useFrame((state, delta) => {
+    if (ref.current) {
+      ref.current.rotation.y += delta
+    }
+  })
+
   return (
-    <mesh position={position}>
+    <mesh position={position} ref={ref}>
       <primitive object={weatherModel} />
     </mesh>
   )
