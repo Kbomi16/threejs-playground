@@ -11,7 +11,7 @@ const Weather = (props) => {
     const weatherModel = useMemo(() => {
         const clonedModel = glb.nodes[weather] || glb.nodes.cloud
         return clonedModel.clone()
-    }, [weather])
+    }, [weather, glb.nodes])
 
     return(
         <mesh position={position}>
