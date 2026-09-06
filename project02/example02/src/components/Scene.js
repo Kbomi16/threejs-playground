@@ -32,13 +32,22 @@ const Scene = () => {
   return (
     <>
       <Earth />
-      {content?.map((el, i) => (
-        <Weather
-          key={el.city}
-          position={[-1 + i * 0.5, 0, 0]}
-          weather={el.weatherData?.weather[0]?.main?.toLowerCase()}
-        />
-      ))}
+      {content?.map((el, i) => {
+        const angle = (i / (content.length - 1)) * Math.PI
+        const radius = 2
+
+        const x = Math.cos(angle) * radius
+        const y = Math.sin(angle) * radius
+
+        return (
+          <Weather
+            key={el.city}
+            position={[x, y - 1, 0]}
+            rotation-y={i + 1}
+            weather={el.weatherData?.weather[0]?.main?.toLowerCase()}
+          />
+        )
+      })}
     </>
   )
 }
