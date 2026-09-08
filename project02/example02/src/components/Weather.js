@@ -1,8 +1,9 @@
 import { useFrame, useLoader } from '@react-three/fiber'
 import { useMemo, useRef } from 'react'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { motion } from 'r3f-motion'
 
-const Weather = ({ position, weather }) => {
+const Weather = ({ position, weather, rotationY }) => {
   const glb = useLoader(GLTFLoader, '/models/weather.glb')
   const ref = useRef(null)
 
@@ -26,9 +27,14 @@ const Weather = ({ position, weather }) => {
   })
 
   return (
-    <mesh position={position} ref={ref}>
+    <motion.mesh
+      whileHover={{ scale: 1.5, transition: 0.5 }}
+      position={position}
+      ref={ref}
+      rotation-y={rotationY}
+    >
       <primitive object={weatherModel} />
-    </mesh>
+    </motion.mesh>
   )
 }
 

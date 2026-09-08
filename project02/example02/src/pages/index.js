@@ -1,6 +1,6 @@
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
 import Lights from '../components/Lights'
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { motion } from 'r3f-motion'
 
 export default function Home() {
@@ -9,8 +9,8 @@ export default function Home() {
       <color attach="background" args={['rgb(67, 127, 240) 100%)']} />
       <Suspense fallback={'loading...'}>
         <Lights />
-        {/* <Scene /> */}
-        <FramerModel position={[0, 0, 0]} />
+        <Scene />
+        {/* <FramerModel position={[0, 0, 0]} /> */}
       </Suspense>
     </Canvas>
   )
@@ -62,11 +62,7 @@ const materialVariants = {
 
 function FramerModel() {
   return (
-    <motion.mesh
-      variants={variants}
-      initial="initial"
-      animate="animate1"
-    >
+    <motion.mesh variants={variants} initial="initial" animate="animate1">
       <cylinderGeometry args={[1, 1, 0.5, 8]} />
       <motion.meshBasicMaterial
         transparent
