@@ -15,3 +15,44 @@ body {
     rgb(12, 73, 187) 100%
   );
 }
+
+.rotation-icon {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background: #fff;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rotation-icon img {
+  display: block;
+  width: 30px;
+  height: 30px;
+}
+
+.cityName {
+  border-radius: 12px;
+  padding: 5px 20px;
+  background: rgb(0, 0, 0, 0.3);
+  color: #fff;
+  white-space: nowrap;
+  font-size: 22px;
+}
+
+.cityName::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top: 10px solid rgb(0, 0, 0, 0.3);
+  border-bottom: 0;
+  border-left: 0;
+  margin-left: -20px;
+  margin-bottom: -10px;
+}

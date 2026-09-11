@@ -45,6 +45,7 @@ const Scene = () => {
             position={[x, y - 1, 0]}
             rotationY={i + 1}
             weather={el.weatherData?.weather[0]?.main?.toLowerCase()}
+            cityName={el.city}
           />
         )
       })}
