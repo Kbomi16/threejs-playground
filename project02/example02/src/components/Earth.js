@@ -2,6 +2,7 @@ import { useFrame, useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { useRef, useState } from 'react'
 import { Html } from '@react-three/drei'
+import { motion } from 'r3f-motion'
 
 const Earth = () => {
   const [isHover, setIsHover] = useState(false)
@@ -18,8 +19,9 @@ const Earth = () => {
 
   return (
     <group position={[0, -1.5, 0]}>
-      <mesh
-        scale={isHover ? 1.5 : 1.3}
+      <motion.mesh
+        scale={1.3}
+        whileHover={{ scale: 1.5, transition: 0.5 }}
         rotation-x={Math.PI / 2}
         ref={ref}
         // onClick={(e) => console.log('클릭')}
@@ -40,7 +42,7 @@ const Earth = () => {
         onPointerLeave={(e) => setIsHover(false)}
       >
         <primitive object={glb.scene} />
-      </mesh>
+      </motion.mesh>
       {isHover && (
         <Html>
           <span className="rotation-icon">

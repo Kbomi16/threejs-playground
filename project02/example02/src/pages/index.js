@@ -2,6 +2,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import Lights from '../components/Lights'
 import { lazy, Suspense, useState } from 'react'
 import { motion } from 'r3f-motion'
+import { OrbitControls } from '@react-three/drei'
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
         <Scene />
         {/* <FramerModel position={[0, 0, 0]} /> */}
       </Suspense>
+      <OrbitControls />
     </Canvas>
   )
 }
