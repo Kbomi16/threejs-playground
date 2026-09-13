@@ -19,12 +19,17 @@ const getCityWeather = (city) => {
         fetch(url)
         .then((response) => response.json())
         .then((data) => {
-            if (data) {
+            if (!data?.weather) {
+                console.error(`Error Api ${city}:`, data);
+                return {
+                    city,
+                    weatherData: null,
+                };
+            }
             return {
-                city: city,
+                city,
                 weatherData: data,
             };
-            }
         })
         .catch((error) => {
             console.error(`Error Api ${city}:`, error);
