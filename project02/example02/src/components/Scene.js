@@ -3,6 +3,8 @@ import Weather from './Weather'
 import { useEffect, useState } from 'react'
 import { getCityWeather } from '../utils/weatherApi'
 import { cities } from '../utils/cities'
+import { Bounds } from '@react-three/drei'
+import FocusWeather from './FocusWeather'
 
 const API = process.env.REACT_APP_API_KEY
 
@@ -32,23 +34,27 @@ const Scene = () => {
   return (
     <>
       <Earth />
-      {content?.map((el, i) => {
-        const angle = (i / (content.length - 1)) * Math.PI
-        const radius = 2
+      <Bounds clip observe margin={0.7}>
+        <FocusWeather>
+          {content?.map((el, i) => {
+            const angle = (i / (content.length - 1)) * Math.PI
+            const radius = 2
 
-        const x = Math.cos(angle) * radius
-        const y = Math.sin(angle) * radius
+            const x = Math.cos(angle) * radius
+            const y = Math.sin(angle) * radius
 
-        return (
-          <Weather
-            key={el.city}
-            position={[x, y - 1, 0]}
-            rotationY={i + 1}
-            weather={el.weatherData?.weather[0]?.main?.toLowerCase()}
-            cityName={el.city}
-          />
-        )
-      })}
+            return (
+              <Weather
+                key={el.city}
+                position={[x, y - 1, 0]}
+                rotationY={i + 1}
+                weather={el.weatherData?.weather[0]?.main?.toLowerCase()}
+                cityName={el.city}
+              />
+            )
+          })}
+        </FocusWeather>
+      </Bounds>
     </>
   )
 }

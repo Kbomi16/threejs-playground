@@ -17,11 +17,12 @@ export default function Home() {
         {/* <FramerModel position={[0, 0, 0]} /> */}
       </Suspense>
       <OrbitControls
+        makeDefault
         enablePan={false}
         minDistance={2}
         maxDistance={15}
-        minPolarAngle={Math.PI / 6} // 최소 회전 각도 (위아래)
-        maxPolarAngle={Math.PI / Math.PI / 6} // 최대 회전 각도 (위아래)
+        minPolarAngle={Math.PI / 2 - Math.PI / 6} // 75°
+        maxPolarAngle={Math.PI / 2 + Math.PI / 6} // 105°
         minAzimuthAngle={-Math.PI / 4} // 최소 회전 각도 (좌우)
         maxAzimuthAngle={Math.PI / 4} // 최대 회전 각도 (좌우)
       />
