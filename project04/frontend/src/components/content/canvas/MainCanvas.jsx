@@ -1,5 +1,7 @@
 import { Canvas } from '@react-three/fiber'
-import { Box, OrbitControls } from '@react-three/drei'
+import { OrbitControls } from '@react-three/drei'
+import Player from './maps/player'
+import RootMap from './maps/RootMap'
 
 export default function MainCanvas() {
   const aspectRatio = window.innerWidth / window.innerHeight
@@ -21,7 +23,7 @@ export default function MainCanvas() {
         name="directionalLight"
         intensity={10}
         castShadow
-        position={[0, -50, -50]}
+        position={[0, 50, -50]}
         // 그림자 여드름(겹침 깨짐) 완화
         shadow-normalBias={0.1}
         // 그림자 카메라 직교 절두체 (넓을수록 넓은 영역에 그림자, 해상도는 떨어짐)
@@ -34,9 +36,8 @@ export default function MainCanvas() {
         shadow-camera-far={200}
       />
       <OrbitControls />
-      <Box>
-        <meshStandardMaterial color="red" />
-      </Box>
+      <Player />
+      <RootMap />
     </Canvas>
   )
 }
