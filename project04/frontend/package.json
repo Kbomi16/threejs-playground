@@ -23,7 +23,7 @@
     "lodash-es": "^4.18.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "recoil": "^0.7.7",
+    "jotai": "^2.12.5",
     "socket.io-client": "^4.8.3",
     "styled-components": "^6.5.3",
     "three": "^0.186.0",

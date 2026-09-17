@@ -1,10 +1,10 @@
-import MainCanvas from './components/content/canvas/MainCanvas'
 import ClientSocketControls from './components/utilComponents/ClientSocketControls'
+import Content from './components/content/Content'
 
 function App() {
   return (
     <>
-      <MainCanvas />
+      <Content />
       <ClientSocketControls />
     </>
   )
